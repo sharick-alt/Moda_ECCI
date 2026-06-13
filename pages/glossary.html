@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Glossary – Moda ECCI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .glossary-hero {
+      background: var(--bg-dark);
+      padding: 6rem 0 3rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .search-bar {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 30px;
+      color: var(--text-light);
+      padding: 0.75rem 1.5rem;
+      width: 100%;
+      max-width: 500px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .search-bar:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      background: rgba(0,212,200,0.05);
+    }
+    .search-bar::placeholder { color: rgba(245,240,232,0.35); }
+    .glossary-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+    }
+    .glossary-table thead th {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-magenta);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .glossary-row {
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    .glossary-row:hover {
+      background: rgba(233,30,140,0.07);
+      transform: translateX(4px);
+    }
+    .glossary-row td {
+      padding: 1rem 1rem;
+      vertical-align: top;
+      border: none;
+    }
+    .glossary-row td:first-child {
+      border-radius: 8px 0 0 8px;
+    }
+    .glossary-row td:last-child {
+      border-radius: 0 8px 8px 0;
+    }
+    .term-en {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+    .term-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+    .badge-color { background: rgba(233,30,140,0.2); color: var(--accent-magenta); }
+    .badge-dev   { background: rgba(0,212,200,0.2);  color: var(--accent-cyan); }
+    .badge-ux    { background: rgba(240,192,64,0.2);  color: var(--accent-gold); }
+    .term-es {
+      font-size: 0.88rem;
+      color: var(--accent-cyan);
+      font-weight: 500;
+    }
+    .term-def {
+      font-size: 0.85rem;
+      color: rgba(245,240,232,0.65);
+      line-height: 1.7;
+    }
+    .filter-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-dim);
+      color: rgba(245,240,232,0.6);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-magenta);
+      border-color: var(--accent-magenta);
+      color: white;
+    }
+    .stats-strip {
+      display: flex; gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent-magenta);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+      font-style: italic;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .glossary-table thead { display: none; }
+      .glossary-row { display: block; margin-bottom: 1rem; padding: 1rem; border-radius: 8px; }
+      .glossary-row td { display: block; padding: 0.25rem 0; border-radius: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="../index.html">
+        <span class="brand-dot"></span> Moda ECCI
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-1">
+          <li class="nav-item"><a class="nav-link" href="../index.html#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="../index.html#experiencia">Experiencia</a></li>
+          <li class="nav-item"><a class="nav-link" href="../index.html#conferencia">Conferencia</a></li>
+          <li class="nav-item"><a class="nav-link" href="../index.html#sostenibilidad">Sostenibilidad</a></li>
+          <li class="nav-item">
+            <a class="nav-link btn-glosario px-3 active" href="glossary.html">Glossary</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-2">
+            <div class="lang-switch" id="langSwitch" onclick="toggleGlossaryLang()" title="Switch language">
+              <span id="langLabel">EN</span>
+              <i class="bi bi-translate ms-1"></i>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="glossary-hero">
+    <div class="container">
+      <p class="eyebrow-label">Moda ECCI · Technical Vocabulary</p>
+      <h1 class="section-title" style="font-size:clamp(2rem,5vw,3.5rem)">
+        Technical <em>Glossary</em>
+      </h1>
+      <p class="section-text" style="max-width:600px" id="glossaryIntro">
+        Key terms learned during Moda ECCI, connecting color theory, design, and software development.
+        Each entry includes the English term, its Spanish translation, and a brief definition.
+      </p>
+      <div class="stats-strip">
+        <div class="stat-item"><div class="stat-num" id="totalTerms">20</div><div class="stat-label">Terms</div></div>
+        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Categories</div></div>
+        <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Languages</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY CONTENT -->
+  <section class="section-dark py-5">
+    <div class="container">
+
+      <!-- Controls -->
+      <div class="d-flex flex-column flex-md-row gap-3 align-items-start align-items-md-center mb-4 flex-wrap">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search terms... / Buscar términos..." id="searchInput" oninput="filterGlossary()" />
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="filterByCategory('all', this)">All</button>
+          <button class="filter-btn" onclick="filterByCategory('color', this)">
+            <i class="bi bi-palette me-1"></i>Color Theory
+          </button>
+          <button class="filter-btn" onclick="filterByCategory('dev', this)">
+            <i class="bi bi-code-slash me-1"></i>Dev
+          </button>
+          <button class="filter-btn" onclick="filterByCategory('ux', this)">
+            <i class="bi bi-phone me-1"></i>UX / UI
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="glossary-table">
+          <thead>
+            <tr>
+              <th>English Term</th>
+              <th>Español</th>
+              <th>Definition / Definición</th>
+            </tr>
+          </thead>
+          <tbody id="glossaryBody">
+            <!-- JS renders rows -->
+          </tbody>
+        </table>
+        <p class="no-results" id="noResults">No terms match your search.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <p class="footer-sub mb-0">SENA · Centro de Manufactura en Textil y Cuero · ADSO · 2025</p>
+      <a href="../index.html" class="footer-link"><i class="bi bi-arrow-left me-1"></i>Back to site</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const glossaryData = [
+      // ── Color Theory ──
+      { en: "Color Theory",        es: "Teoría del color",        def: "Study of how colors interact, mix, and how they are perceived by the human eye and brain. Foundation of all visual design.", cat: "color" },
+      { en: "Color Wheel",         es: "Círculo cromático",       def: "A circular diagram that organizes colors based on their chromatic relationships. Formalized by Isaac Newton in the 17th century.", cat: "color" },
+      { en: "Hue",                 es: "Tono / Matiz",            def: "The pure, saturated color as defined by its position on the color spectrum or wheel (e.g., red, blue, yellow).", cat: "color" },
+      { en: "Saturation",          es: "Saturación",              def: "The intensity or purity of a color. High saturation means vivid color; low saturation approaches gray.", cat: "color" },
+      { en: "Value / Brightness",  es: "Valor / Luminosidad",     def: "The lightness or darkness of a color. White has the highest value; black has the lowest.", cat: "color" },
+      { en: "Pantone",             es: "Pantone",                 def: "Standardized color matching system used worldwide to ensure color consistency across different media and materials.", cat: "color" },
+      { en: "Semiology of Color",  es: "Semiología del color",    def: "Study of how colors function as signs and symbols that generate meaning, emotion, and cultural associations.", cat: "color" },
+      { en: "Complementary Colors",es: "Colores complementarios", def: "Colors located opposite each other on the color wheel that create maximum contrast when placed together.", cat: "color" },
+      { en: "Color Palette",       es: "Paleta de colores",       def: "A selected set of colors chosen to work harmoniously together in a design or brand identity.", cat: "color" },
+      { en: "Caput Mortuum",       es: "Caput Mortuum",           def: "Historic pigment (violet-brown) originally made from mummified remains. One of the oldest and most controversial pigments.", cat: "color" },
+      // ── Dev ──
+      { en: "Frontend",            es: "Interfaz de usuario",     def: "The client-side layer of a web application: everything the user sees and interacts with directly in the browser.", cat: "dev" },
+      { en: "Responsive Design",   es: "Diseño responsive",       def: "Design approach ensuring a website adapts its layout to different screen sizes and devices.", cat: "dev" },
+      { en: "Bootstrap",           es: "Bootstrap",               def: "Open-source CSS and JS framework with pre-built components for building responsive, mobile-first websites quickly.", cat: "dev" },
+      { en: "GitHub Pages",        es: "GitHub Pages",            def: "Free static website hosting service provided by GitHub, allowing developers to deploy web projects directly from repositories.", cat: "dev" },
+      { en: "Semantic HTML",       es: "HTML semántico",          def: "Using HTML elements according to their intended meaning (e.g., header, nav, article) to improve accessibility and SEO.", cat: "dev" },
+      // ── UX / UI ──
+      { en: "User Experience (UX)",es: "Experiencia de usuario",  def: "The overall experience a person has while interacting with a product, encompassing usability, accessibility, and emotion.", cat: "ux" },
+      { en: "User Interface (UI)", es: "Interfaz de usuario",     def: "The visual elements (buttons, typography, color, layout) through which a user interacts with a digital product.", cat: "ux" },
+      { en: "Color Contrast",      es: "Contraste de color",      def: "The difference in luminance between foreground and background colors. Crucial for accessibility (WCAG guidelines).", cat: "ux" },
+      { en: "Design Token",        es: "Token de diseño",         def: "Named variables storing design values like colors, spacing, and typography, used to maintain consistency in design systems.", cat: "ux" },
+      { en: "Visual Hierarchy",    es: "Jerarquía visual",        def: "Arrangement of design elements to guide the user's eye and indicate their relative importance on the page.", cat: "ux" },
+    ];
+
+    let activeCategory = 'all';
+
+    function renderGlossary(data) {
+      const tbody = document.getElementById('glossaryBody');
+      const noResults = document.getElementById('noResults');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        noResults.style.display = 'block';
+        return;
+      }
+      noResults.style.display = 'none';
+
+      const badgeMap = { color: 'badge-color', dev: 'badge-dev', ux: 'badge-ux' };
+      const labelMap = { color: 'Color Theory', dev: 'Dev', ux: 'UX/UI' };
+
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        row.className = 'glossary-row';
+        row.setAttribute('data-cat', item.cat);
+        row.innerHTML = `
+          <td>
+            <div class="term-en">
+              ${item.en}
+              <span class="term-badge ${badgeMap[item.cat]}">${labelMap[item.cat]}</span>
+            </div>
+          </td>
+          <td><div class="term-es">${item.es}</div></td>
+          <td><div class="term-def">${item.def}</div></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function filterGlossary() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = glossaryData.filter(item => {
+        const matchCat = activeCategory === 'all' || item.cat === activeCategory;
+        const matchSearch = item.en.toLowerCase().includes(query) ||
+                            item.es.toLowerCase().includes(query) ||
+                            item.def.toLowerCase().includes(query);
+        return matchCat && matchSearch;
+      });
+      renderGlossary(filtered);
+    }
+
+    function filterByCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterGlossary();
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGlossary(glossaryData);
+      document.getElementById('totalTerms').textContent = glossaryData.length;
+
+      // Navbar scroll
+      const nav = document.getElementById('mainNav');
+      window.addEventListener('scroll', () => {
+        nav.style.background = window.scrollY > 60
+          ? 'rgba(13,13,13,0.97)'
+          : 'rgba(13,13,13,0.85)';
+      });
+
+      // Apply saved lang
+      const saved = localStorage.getItem('modaLang') || 'en';
+      applyGlossaryLang(saved);
+    });
+
+    let glossaryLang = localStorage.getItem('modaLang') || 'en';
+
+    const glossaryTexts = {
+      es: {
+        title: 'Glosario <em>Técnico</em>',
+        eyebrow: 'Moda ECCI · Vocabulario Técnico',
+        intro: 'Términos clave aprendidos durante Moda ECCI, conectando teoría del color, diseño y desarrollo de software. Cada entrada incluye el término en inglés, su traducción al español y una breve definición.',
+        searchPlaceholder: 'Buscar términos...',
+        allBtn: 'Todos',
+        statsTerms: 'Términos',
+        statsCats: 'Categorías',
+        statsLangs: 'Idiomas',
+        noResults: 'No se encontraron términos.',
+        back: 'Volver al sitio',
+        thEn: 'Término en Inglés',
+        thEs: 'Español',
+        thDef: 'Definición'
+      },
+      en: {
+        title: 'Technical <em>Glossary</em>',
+        eyebrow: 'Moda ECCI · Technical Vocabulary',
+        intro: 'Key terms learned during Moda ECCI, connecting color theory, design, and software development. Each entry includes the English term, its Spanish translation, and a brief definition.',
+        searchPlaceholder: 'Search terms...',
+        allBtn: 'All',
+        statsTerms: 'Terms',
+        statsCats: 'Categories',
+        statsLangs: 'Languages',
+        noResults: 'No terms match your search.',
+        back: 'Back to site',
+        thEn: 'English Term',
+        thEs: 'Spanish',
+        thDef: 'Definition'
+      }
+    };
+
+    function applyGlossaryLang(lang) {
+      glossaryLang = lang;
+      localStorage.setItem('modaLang', lang);
+      const t = glossaryTexts[lang] || glossaryTexts.en;
+      const lbl = document.getElementById('langLabel');
+      if (lbl) lbl.textContent = lang.toUpperCase();
+
+      const titleEl = document.querySelector('.section-title');
+      if (titleEl) titleEl.innerHTML = t.title;
+
+      const eyebrowEl = document.querySelector('.eyebrow-label');
+      if (eyebrowEl) eyebrowEl.textContent = t.eyebrow;
+
+      const introEl = document.getElementById('glossaryIntro');
+      if (introEl) introEl.textContent = t.intro;
+
+      const searchEl = document.getElementById('searchInput');
+      if (searchEl) searchEl.placeholder = t.searchPlaceholder;
+
+      const noResultsEl = document.getElementById('noResults');
+      if (noResultsEl) noResultsEl.textContent = t.noResults;
+
+      const allBtn = document.querySelector('.filter-btn[onclick*="all"]');
+      if (allBtn) allBtn.textContent = t.allBtn;
+
+      const backLink = document.querySelector('.footer-link');
+      if (backLink) backLink.innerHTML = '<i class="bi bi-arrow-left me-1"></i>' + t.back;
+
+      const ths = document.querySelectorAll('.glossary-table thead th');
+      if (ths.length >= 3) {
+        ths[0].textContent = t.thEn;
+        ths[1].textContent = t.thEs;
+        ths[2].textContent = t.thDef;
+      }
+
+      const statsEls = document.querySelectorAll('.stat-label');
+      if (statsEls.length >= 3) {
+        statsEls[0].textContent = t.statsTerms;
+        statsEls[1].textContent = t.statsCats;
+        statsEls[2].textContent = t.statsLangs;
+      }
+
+      filterGlossary();
+    }
+
+    function toggleGlossaryLang() {
+      applyGlossaryLang(glossaryLang === 'es' ? 'en' : 'es');
+    }
+  </script>
+</body>
+</html>
