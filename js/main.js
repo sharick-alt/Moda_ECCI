@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════
-   MODA ECCI — main.js  (Bilingual Edition)
-═══════════════════════════════════════════════ */
-
-// ── BILINGUAL ENGINE ──────────────────────────
 let currentLang = localStorage.getItem('modaLang') || 'es';
 
 function applyLang(lang) {
@@ -101,7 +96,7 @@ function drawAnimatedWheel() {
   requestAnimationFrame(drawAnimatedWheel);
 }
 
-// ── Circular Economy Canvas ──
+
 function drawCircularEconomy() {
   const canvas = document.getElementById('circularCanvas');
   if (!canvas) return;
@@ -154,7 +149,6 @@ function drawCircularEconomy() {
   ctx.stroke();
 }
 
-// ── Photo Modal ──
 function initPhotoModal() {
   const thumbs = document.querySelectorAll('.photo-thumb');
   const modalImg = document.getElementById('modalImg');
@@ -173,7 +167,6 @@ function initPhotoModal() {
   });
 }
 
-// ── Navbar scroll ──
 function initNavbar() {
   const nav = document.getElementById('mainNav');
   if (!nav) return;
@@ -184,7 +177,6 @@ function initNavbar() {
   });
 }
 
-// ── Fade-in on scroll ──
 function initFadeIn() {
   const targets = document.querySelectorAll('.info-card, .adso-card, .conclusion-card, .color-history-card, .sustain-item');
   targets.forEach(el => el.classList.add('fade-in'));
@@ -199,7 +191,6 @@ function initFadeIn() {
   targets.forEach(el => observer.observe(el));
 }
 
-// ── ScrollSpy ──
 function initScrollSpy() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('#mainNav .nav-link');
@@ -215,7 +206,6 @@ function initScrollSpy() {
   });
 }
 
-// ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
   applyLang(currentLang);
   drawAnimatedWheel();
