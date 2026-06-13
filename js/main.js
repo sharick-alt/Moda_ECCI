@@ -4,14 +4,12 @@ function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem('modaLang', lang);
 
-  // Update html lang attribute
   document.getElementById('htmlRoot').lang = lang === 'es' ? 'es' : 'en';
 
-  // Update toggle label
+
   const label = document.getElementById('langLabel');
   if (label) label.textContent = lang === 'es' ? 'ES' : 'EN';
 
-  // Translate all [data-es] / [data-en] elements
   document.querySelectorAll('[data-es]').forEach(el => {
     const raw = lang === 'es' ? el.getAttribute('data-es') : el.getAttribute('data-en');
     if (!raw) return;
@@ -25,7 +23,6 @@ function applyLang(lang) {
     el.innerHTML = decoded;
   });
 
-  // Gallery modal captions use data-caption-es / data-caption-en
   document.querySelectorAll('[data-caption-es]').forEach(el => {
     const cap = lang === 'es'
       ? el.getAttribute('data-caption-es')
@@ -43,7 +40,6 @@ function toggleLang() {
   applyLang(currentLang === 'es' ? 'en' : 'es');
 }
 
-// ── Color Wheel Canvas (animated hero) ──
 let wheelAngle = 0;
 function drawAnimatedWheel() {
   const canvas = document.getElementById('wheelDisplay');
